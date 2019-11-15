@@ -1,16 +1,24 @@
-FROM node:8.9.1 AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100-bionic AS build
 
-COPY ./ /usr/src/react-app/
+COPY ./web.csproj /src/
 
-WORKDIR /usr/src/react-app/
+WORKDIR /src
 
-RUN npm install
+RUN dotnet restore
 
-RUN npm run build
+COPY . .
 
-FROM nginx:1.10 AS runtime-env
+RUN dotnet build "web.csproj" -c Release -o /app
+RUN dotnet publish "web.csproj" -c Release -o /app
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=build-env /usr/src/react-app/dist /usr/share/nginx/html/
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0.0-bionic
 
+EXPOSE 80
+WORKDIR /app
+
+COPY ./entrypoint.sh /app/
+
+COPY --from=build /app .
+
+ENTRYPOINT dotnet /app/web.dll
