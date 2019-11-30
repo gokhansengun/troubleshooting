@@ -3,7 +3,7 @@
 Run below command and try to get Elasticsearch up and running
 
 ```bash
-docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.4.1
+docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 docker.elastic.co/elasticsearch/elasticsearch:7.4.1
 ```
 
 Test whether Elasticsearch is running with below command
