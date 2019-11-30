@@ -1,15 +1,6 @@
-FROM node:8.9.1 AS build-env
+FROM busybox:1.24
+VOLUME /data
+RUN echo "hello-world!!!!" > /data/myfile.txt
 
-COPY ./ /usr/src/react-app/
+CMD ["cat", "/data/myfile.txt"]
 
-WORKDIR /usr/src/react-app/
-
-RUN npm install
-
-RUN npm run build
-
-FROM nginx:1.10 AS runtime-env
-
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-COPY --from=build-env /usr/src/react-app/dist /usr/share/nginx/html/
