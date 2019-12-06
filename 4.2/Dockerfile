@@ -8,16 +8,10 @@ RUN mvn dependency:go-offline -B
 
 COPY . /src/
 
-RUN mvn package
+RUN mvn package -DskipTests
 
 FROM openjdk:8u171-jre-alpine
 
-WORKDIR /app
+COPY --from=maven /src/target/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar /app/
 
-COPY --from=maven target/*.jar ./
-
-# set the startup command to run your binary
-CMD ["java", "-jar", "./app/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar"]
-
-
-
+CMD ["java", "-jar", "/app/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar"]
