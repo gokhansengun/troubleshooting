@@ -12,6 +12,8 @@ RUN mvn package -DskipTests
 
 FROM openjdk:8u171-jre-alpine
 
+COPY ./entrypoint.sh /app/
+
 COPY --from=maven /src/target/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar /app/
 
-CMD ["java", "-jar", "/app/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar"]
+CMD ["/app/entrypoint.sh"]
