@@ -16,4 +16,4 @@ COPY ./entrypoint.sh /app/
 
 COPY --from=maven /src/target/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar /app/
 
-CMD ["/app/entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
